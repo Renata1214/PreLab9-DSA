@@ -77,11 +77,12 @@ Tree * eval_powr()
     {
         if (peek =="^")
         {
+            tok();
+            Tree *tempside = eval_prim();
             Tree *temp2 = new Tree;
             temp2->op="^";
-            tok();
-            temp2->left= eval_prim();
-            temp2->right= temp;
+            temp2->right= tempside;
+            temp2->left= temp;
             temp=temp2;
         }
         else 
@@ -98,12 +99,14 @@ Tree * eval_term()
     Tree *temp= eval_powr();
     for (;;)
     {
+        
         if (peek=="*" || peek=="/" || peek=="%"){
+            string save = tok();
+            Tree *tempside = eval_powr();
             Tree *temp2 = new Tree;
-            temp2->op=peek;
-            tok();
-            temp2->left= eval_powr();
-            temp2->right= temp;
+            temp2->op=save;
+            temp2->right= tempside;
+            temp2->left= temp;
             temp=temp2;
         }
         else 
@@ -111,6 +114,7 @@ Tree * eval_term()
             break;
         }
     }
+   
         return temp;
 }
 
@@ -120,12 +124,14 @@ Tree * eval_expr()
     Tree *temp= eval_term();
     for (;;)
     {
+      
         if (peek=="+" || peek=="-"){
+            string save = tok();
+            Tree *tempside = eval_term();
             Tree *temp2 = new Tree;
-            temp2->op=peek;
-            tok();
-            temp2->left= eval_term();
-            temp2->right= temp;
+            temp2->op=save;
+            temp2->left= temp;
+            temp2->right= tempside;
             temp=temp2;
         }
         else if (peek.empty()) break;
@@ -179,7 +185,6 @@ string Tree::edges() const
     // FIXME
         if(left!=nullptr || right!=nullptr) //if left is not equal to nullptr then by def right should not be either and vice versa, otherwise the tree does not get printed
         {
-            cout << "okay trial 1" << endl;
             if (!op.empty())
             {
                 if (!(left->op.empty()))

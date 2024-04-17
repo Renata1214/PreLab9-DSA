@@ -1,0 +1,6 @@
+Consider the STL containers set and map:
+● How are they implemented?
+● What operations do they support?
+● What are the advantages and disadvantages of each?
+
+
