@@ -154,7 +154,7 @@ try
 
         cout << "```mermaid\ngraph TD\n"
              << "A(\"" << line << "\")\n"
-             << "B(\""  /*tree->expr()*/ << "\")\n"
+             << "B(\"" << tree->expr() << "\")\n"
              << "A --> B\n"
              << "style A fill:#ded\n"
              << "style B fill:#dde\n"
@@ -182,13 +182,13 @@ string Tree::edges() const
             cout << "okay trial 1" << endl;
             if (!op.empty())
             {
-                if (!(right->op.empty()))
-                {
-                    result= result + to_string(id) + "((\"" + op + "\")) --> " + to_string(right->id) + "((\"" + right->op + "\"))" + "\n";
-                }
                 if (!(left->op.empty()))
                 {
                     result= result + to_string(id) + "((\"" + op + "\")) --> " + to_string(left->id) + "((\"" + left->op + "\"))" + "\n";
+                }
+                if (!(right->op.empty()))
+                {
+                    result= result + to_string(id) + "((\"" + op + "\")) --> " + to_string(right->id) + "((\"" + right->op + "\"))" + "\n";
                 }
                 if(!(left->val.empty()))
                 {
@@ -215,10 +215,17 @@ string Tree::edges() const
 string Tree::expr() const
 {
     // FIXME
-
-    string result ;
-
-
-
-    return "";
+     if (op.empty()) \
+    {
+        return val; // Return the value if it's a leaf
+    } 
+    else {
+        string left_expr;
+        if (left != nullptr) {left_expr= left->expr();} 
+        else {left_expr="";}
+        string right_expr ;
+        if (right != nullptr) {right_expr= right->expr();} 
+        else {right_expr="";}
+        return left_expr + " " + op + " " + right_expr;
+    }
 }
