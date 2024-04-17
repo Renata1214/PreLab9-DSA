@@ -18,9 +18,9 @@ string peek;
 string tok() 
 { 
     auto r = peek; peek = ""; 
-    if (*gis) 
-        (*gis) >> peek; 
-    return r; 
+     
+  if (*gis) 
+        (*gis) >> peek;  return r; 
 }
 
 int gid = 0;
@@ -56,7 +56,7 @@ Tree * eval_prim()
         tok();
         temp->val = "-" + tok(); // Include the negative sign in the value
     }
-    if (peek="(")
+    if (peek=="(")
     {
         tok(); // This function would return ( but would move peek to the next element after (
         return eval_expr();
@@ -75,7 +75,7 @@ Tree * eval_powr()
     Tree *temp= eval_prim();
     for (;;) // double check about the infinite loop
     {
-        if (peek=="^")
+        if (peek =="^")
         {
             Tree *temp2 = new Tree;
             temp2->op="^";
@@ -98,7 +98,7 @@ Tree * eval_term()
     Tree *temp= eval_powr();
     for (;;)
     {
-        if (peek="*"||peek="/"||peek="%"){
+        if (peek=="*" || peek=="/" || peek=="%"){
             Tree *temp2 = new Tree;
             temp2->op=peek;
             tok();
@@ -120,7 +120,7 @@ Tree * eval_expr()
     Tree *temp= eval_term();
     for (;;)
     {
-        if (peek="+"||peek="-"){
+        if (peek=="+" || peek=="-"){
             Tree *temp2 = new Tree;
             temp2->op=peek;
             tok();
@@ -179,23 +179,24 @@ string Tree::edges() const
     // FIXME
         if(left!=nullptr || right!=nullptr) //if left is not equal to nullptr then by def right should not be either and vice versa, otherwise the tree does not get printed
         {
+            cout << "okay trial 1" << endl;
             if (!op.empty())
             {
-                if (!(left->op.empty()))
-                {
-                    result= result + id + "((\"" + op + "\")) --> " + id + "((\"" + left->op + "\"))" + "\n";
-                }
                 if (!(right->op.empty()))
                 {
-                    result= result + id + "((\"" + op + "\")) --> " + id + "((\"" + right->op + "\"))" + "\n";
+                    result= result + to_string(id) + "((\"" + op + "\")) --> " + to_string(right->id) + "((\"" + right->op + "\"))" + "\n";
+                }
+                if (!(left->op.empty()))
+                {
+                    result= result + to_string(id) + "((\"" + op + "\")) --> " + to_string(left->id) + "((\"" + left->op + "\"))" + "\n";
                 }
                 if(!(left->val.empty()))
                 {
-                    result= result + id + "((\"" + op + "\")) --> " + id + "[\"" + left->val + "\"]"+ '\n';
+                    result= result + to_string(id) + "((\"" + op + "\")) --> " + to_string(left->id) + "[\"" + left->val + "\"]"+ '\n';
                 }
                 if(!(right->val.empty()))
                 {
-                    result= result + id + "((\"" + op + "\")) --> " + id + "[\"" + right->val + "\"]"+ '\n';
+                    result= result + to_string(id) + "((\"" + op + "\")) --> " + to_string(right->id) + "[\"" + right->val + "\"]"+ '\n';
                 }
                 if (!(left->op.empty()))
                 {
@@ -214,6 +215,10 @@ string Tree::edges() const
 string Tree::expr() const
 {
     // FIXME
+
+    string result ;
+
+
 
     return "";
 }
