@@ -9,6 +9,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <cmath>
 
 using namespace std;
 
@@ -42,7 +43,7 @@ struct Tree
     string edges() const;
     string expr() const;
     double compute () const;
-    bool Tree::capability (Tree * b) const;
+    bool capability (Tree * b) const;
 };
 
 
@@ -177,8 +178,8 @@ try
              << tree1->edges() << "```\n---\n";
             
             // Create second tree
-            istringstream is(afterEquals);
-            gis = &is; // reset input stream
+            istringstream is1(afterEquals);
+            gis = &is1; // reset input stream
             gid = 0; // reset id counter
             tok(); // load peek token
 
@@ -194,7 +195,7 @@ try
             bool caparesult = tree1 -> capability(tree2);
             cout << "Now capability " << endl;
             cout << "The expression " << line << "is " << caparesult << endl;
-
+            delete tree1;
             delete tree2;
         }
         else
@@ -208,7 +209,7 @@ try
             //Create first tree
             Tree * tree1 = eval_expr();
             cout << "```mermaid\ngraph TD\n"
-             << "A(\"" << beforeEquals << "\")\n"
+             << "A(\"" << line << "\")\n"
              << "B(\"" << tree1->expr() << "\")\n"
              << "A --> B\n"
              << "style A fill:#ded\n"
@@ -216,9 +217,9 @@ try
              << tree1->edges() << "```\n---\n";
 
             cout << "Now compute the value " << endl;
-            "The expression " << line << "is " << tree1 -> compute() << endl; ;
+            cout << "The expression " << line << "is " << tree1 -> compute() << endl; 
+            delete tree1;
         }
-        delete tree1;
     }
 }
     catch (string s) { cout << "Error: " << s << '\n'; }
@@ -294,7 +295,7 @@ double Tree::compute () const
 
     if (op.empty())
     {
-        return val;
+        return stod(val);
     }
     else
     {
@@ -317,7 +318,7 @@ double Tree::compute () const
             if (save == 0) 
             {
                     // Handle division by zero error
-                cout << "You are dividing by zero"
+                cout << "You are dividing by zero" << endl;
                 throw ;
             } 
             else 
@@ -331,7 +332,7 @@ double Tree::compute () const
             if (save1 == 0) 
             {
                 // Handle division by zero error
-                cout << "You are dividing by zero"
+                cout << "You are dividing by zero" << endl;
                 throw ;
             } 
             else 
