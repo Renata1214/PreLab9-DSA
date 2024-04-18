@@ -1,6 +1,89 @@
 Consider the STL containers set and map:
 ● How are they implemented?
+
+SETS. 
+Sets are containers that are meant to keep elements arranged in a certain order and are 
+implemented through self-balancing binary search trees. Sets can be implemented using different data structures, 
+such as HashSets and TreeSets
+Once the elements are added, they cannot be changed as they become constants. 
+The sytanx of a set is shown below:
+set<datatype> name_of_set;
+
+MAPS. 
+Associative containers used to store collection of key-value pairs. Each element has a key value and a mapped value. No two mapped
+values can have the same key.
+There three types of maps in c++ : order, unordered and Multimap. Maps in the STL are typically implemented using self-balancing 
+binary search trees (e.g., Red-Black Trees) or hash tables, depending on the implementation 
+
+The syntax for each type of map. 
+Order Map: map<int, int>mp
+Unordered Map: unordered_map<int, int>mp
+Multi map: multimap<int, int>mp
+
+
 ● What operations do they support?
+
+Sets
+begin – Returns  iterator to first element in the set.
+end – Returns iterator to element that follows the last element in the set.
+size – Returns the number of elements.
+max_size – Returns the maximum number of elements the set can hold.
+empty – Returns whether the set is empty.
+Search- Check if an element exists in the set.
+Traversal- Traverse the elements of the set in a sorted order.
+Count- Count the occurrences of a particular element in the set.
+Lower Bound / Upper Bound- Find the elements that are less than or greater than a given value, respectively.
+
+Maps.
+Insertion- Add a key-value pair to the map.
+Deletion- Remove a key-value pair from the map.
+Search - Search for a key in the map and retrieve its corresponding value.
+Traversal - Traverse the key-value pairs of the map.
+Count- Count the occurrences of a particular key in the map.
+Lower Bound / Upper Bound- Find the key-value pairs that are less than or greater than a given key, respectively.
+
 ● What are the advantages and disadvantages of each?
+
+SETS 
+
+Advantages.
+Time Complexity for search.
+Insertion of Elements – O(log N)
+Deletion of Elements – O(log N)
+Elements in a set are always sorted.
+Elements are automatically sorted upon insertion. 
+Set can be used to store unique values to avoid duplications 
+Set are dynamic
+Sets provide fast and efficient operations for checking if an element is present in the set or not.
+
+Disadvantages
+Sets may have more memory overhead compared to unordered containers 
+due to the need for maintaining order using self-balancing trees.
+Slower Insertion/Deletion: Insertion and deletion operations 
+may be slower compared to unordered containers due to tree rebalancing.
+Elements in a set can only be accessed with pointers, there is no indexing.
+Not suitable for large data sets.
+Sets can only store elements of a specific data type.
+Sets can use more memory than other data structures (each element is stored in a separate location).
+
+MAPS
+
+Advantages
+Values can be duplicated. 
+The size is dynamic
+Stores elements in a sorted order based on the key. Allows for binary search. 
+Provides logarithmic time complexity (O(log n)) for common operations like insertion, deletion.
+Manages memory allocation and deallocation.
+Rich Interface: Provides a rich set of member functions to easily manipulate key-value pairs, including methods to find, count, and remove elements, as well as to access and modify values.
+
+Disadvantages. 
+The use of nodes in a tree structure, results in higher memory usage.
+Each insertion might involve tree rebalancing.
+While the worst-case time complexity is logarithmic, real-world performance can sometimes degrade if the tree becomes unbalanced.
+The elements in an std::unordered_map are not stored in any specific order, making it more difficult to iterate through the elements
+in a specific order.
+The performance of std::unordered_map is less predictable than that of std::map 
+because it depends on the quality of the hash function and the load factor of the hash table.
+
 
 
