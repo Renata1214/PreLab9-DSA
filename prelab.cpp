@@ -42,7 +42,7 @@ struct Tree
     string edges() const;
     string expr() const;
     double compute () const;
-    bool Tree::capability (Tree * b) const;
+    bool capability () const
 };
 
 
@@ -153,78 +153,27 @@ try
         if ( line[0] == '#' ) continue;
         if ( line == "end" ) break;
 
-        size_t pos = line.find('=');
-        if (pos != string::npos)
-        {
-            // There is an equals sign in the line
-            // Extract substrings before and after the equals sign
-            string beforeEquals = line.substr(0, pos);
-            string afterEquals = line.substr(pos + 1);
+        istringstream is(line);
+        gis = &is; // reset input stream
+        gid = 0; // reset id counter
+        tok(); // load peek token
 
-            istringstream is(beforeEquals);
-            gis = &is; // reset input stream
-            gid = 0; // reset id counter
-            tok(); // load peek token
+        Tree * tree = eval_expr();
 
-            //Create first tree
-            Tree * tree1 = eval_expr();
-            cout << "```mermaid\ngraph TD\n"
-             << "A(\"" << beforeEquals << "\")\n"
-             << "B(\"" << tree1->expr() << "\")\n"
+        cout << "```mermaid\ngraph TD\n"
+             << "A(\"" << line << "\")\n"
+             << "B(\"" << tree->expr() << "\")\n"
              << "A --> B\n"
              << "style A fill:#ded\n"
              << "style B fill:#dde\n"
-             << tree1->edges() << "```\n---\n";
-            
-            // Create second tree
-            istringstream is(afterEquals);
-            gis = &is; // reset input stream
-            gid = 0; // reset id counter
-            tok(); // load peek token
+             << tree->edges() << "```\n---\n";
 
-            Tree * tree2 = eval_expr();
-            cout << "```mermaid\ngraph TD\n"
-             << "A(\"" << beforeEquals << "\")\n"
-             << "B(\"" << tree2->expr() << "\")\n"
-             << "A --> B\n"
-             << "style A fill:#ded\n"
-             << "style B fill:#dde\n"
-             << tree2->edges() << "```\n---\n";
-
-            bool caparesult = tree1 -> capability(tree2);
-            cout << "Now capability " << endl;
-            cout << "The expression " << line << "is " << caparesult << endl;
-
-            delete tree2;
-        }
-        else
-        {
-            // There is no equals sign in the line
-            istringstream is(line);
-            gis = &is; // reset input stream
-            gid = 0; // reset id counter
-            tok(); // load peek token
-
-            //Create first tree
-            Tree * tree1 = eval_expr();
-            cout << "```mermaid\ngraph TD\n"
-             << "A(\"" << beforeEquals << "\")\n"
-             << "B(\"" << tree1->expr() << "\")\n"
-             << "A --> B\n"
-             << "style A fill:#ded\n"
-             << "style B fill:#dde\n"
-             << tree1->edges() << "```\n---\n";
-
-            cout << "Now compute the value " << endl;
-            "The expression " << line << "is " << tree1 -> compute() << endl; ;
-        }
-        delete tree1;
+        delete tree;
     }
 }
     catch (string s) { cout << "Error: " << s << '\n'; }
     catch (...) { cout << "exception\n"; }
 }
-
 
 string Tree::str() const
 {
@@ -353,17 +302,38 @@ double Tree::compute () const
 
 }
 
-bool Tree::capability (Tree * b) const
+bool Tree::capability () const
 {
-    double first= compute();
-    double second = b->compute ();
-  if (first == second){
-    cout << first << "==" << second << endl;
-    return true;
-  }
-  else {
-    cout << " The results of trees are not equal "<< first << "!=" << second << endl;
-    return false;
-  }
-  
+
+    try
+{
+    for (string line; getline(cin, line);)
+    {
+        if ( line.empty() ) continue;
+        if ( line[0] == '#' ) continue;
+        if ( line == "end" ) break;
+
+        istringstream is(line);
+        gis = &is; // reset input stream
+        gid = 0; // reset id counter
+        tok(); // load peek token
+
+        Tree * tree = eval_expr();
+
+        cout << "```mermaid\ngraph TD\n"
+             << "A(\"" << line << "\")\n"
+             << "B(\"" << tree->expr() << "\")\n"
+             << "A --> B\n"
+             << "style A fill:#ded\n"
+             << "style B fill:#dde\n"
+             << tree->edges() << "```\n---\n";
+
+        delete tree;
+    }
+}
+    catch (string s) { cout << "Error: " << s << '\n'; }
+    catch (...) { cout << "exception\n"; }
+
+
+
 }
