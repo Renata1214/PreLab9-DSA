@@ -13,6 +13,12 @@
 
 using namespace std;
 
+
+//function to transform integer to double
+int doubleToInt(double value) {
+    return static_cast<int>(value);
+}
+
 istream * gis;
 string peek;
 
@@ -127,12 +133,11 @@ Tree * eval_expr()
     Tree *temp= eval_term();
     for (;;)
     {
-      
         if (peek=="+" || peek=="-"){
             string save = tok();
             Tree *tempside = eval_term();
             Tree *temp2 = new Tree;
-            temp2->op=save;
+            temp2->op= save;
             temp2->left= temp;
             temp2->right= tempside;
             temp=temp2;
@@ -217,7 +222,7 @@ try
              << tree1->edges() << "```\n---\n";
 
             cout << "Now compute the value " << endl;
-            cout << "The expression " << line << "is " << tree1 -> compute() << endl; 
+            cout << "The expression " << line << " is " << tree1->compute() << endl; 
             delete tree1;
         }
     }
@@ -274,7 +279,7 @@ string Tree::edges() const
 string Tree::expr() const
 {
     // FIXME
-     if (op.empty()) \
+     if (op.empty()) 
     {
         return val; // Return the value if it's a leaf
     } 
@@ -302,19 +307,22 @@ double Tree::compute () const
     //assuming that the expression will be balanced 
         if (op == "+") 
         {
-            result = result + stod(left->compute()) + stod(right->compute());
+            result = result + left->compute() + right->compute();
+            return result;
         } 
         else if (op == "-") 
         {
-            result = result + stod(left->compute()) - stod(right->compute());
+            result = result + left->compute() - right->compute();
+            return result;
         } 
         else if (op == "*") 
         {
-            result = result + stod(left->compute()) * stod(right->compute());
+            result = result + left->compute() * right->compute();
+            return result;
         } 
         else if (op == "/") 
         {
-            double save = stod(right->compute());
+            double save = right->compute();
             if (save == 0) 
             {
                     // Handle division by zero error
@@ -323,13 +331,18 @@ double Tree::compute () const
             } 
             else 
             {
-                result = result + stod(left->compute()) / save;
+                result = result + left->compute() / save;
+                return result;
             }
         } 
         else if (op == "%")
         {
-            double save1 = stod(right->compute());
-            if (save1 == 0) 
+            double save1 = right->compute();
+            double save2= left -> compute();
+            int rightval = doubleToInt(save1);
+            int leftval = doubleToInt(save2);
+
+            if (rightval == 0) 
             {
                 // Handle division by zero error
                 cout << "You are dividing by zero" << endl;
@@ -337,18 +350,20 @@ double Tree::compute () const
             } 
             else 
             {
-                result = result + stod(left->compute()) % save1;
+                result = result + leftval % rightval;
+                return result;
             }
         } 
         else if (op == "^") 
         {
-            result = pow(stod(left->compute()), stod(right->compute())); // Using the pow function from cmath for exponentiation
+            result = pow(left->compute(), right->compute()); // Using the pow function from cmath for exponentiation
+            return result;
         } 
         else 
         {
             // Handle invalid operator
             cout << "Invalid operator" << endl;
-            throw;
+            return -100000000;
         }
     }
 

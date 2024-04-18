@@ -41,8 +41,6 @@ struct Tree
     string str() const;
     string edges() const;
     string expr() const;
-    double compute () const;
-    bool capability () const
 };
 
 
@@ -237,103 +235,4 @@ string Tree::expr() const
     }
 }
 
-double Tree::compute () const 
-{
-    double result = 0;
 
-    if (op.empty())
-    {
-        return val;
-    }
-    else
-    {
-    //assuming that the expression will be balanced 
-        if (op == "+") 
-        {
-            result = result + stod(left->compute()) + stod(right->compute());
-        } 
-        else if (op == "-") 
-        {
-            result = result + stod(left->compute()) - stod(right->compute());
-        } 
-        else if (op == "*") 
-        {
-            result = result + stod(left->compute()) * stod(right->compute());
-        } 
-        else if (op == "/") 
-        {
-            double save = stod(right->compute());
-            if (save == 0) 
-            {
-                    // Handle division by zero error
-                cout << "You are dividing by zero"
-                throw ;
-            } 
-            else 
-            {
-                result = result + stod(left->compute()) / save;
-            }
-        } 
-        else if (op == "%")
-        {
-            double save1 = stod(right->compute());
-            if (save1 == 0) 
-            {
-                // Handle division by zero error
-                cout << "You are dividing by zero"
-                throw ;
-            } 
-            else 
-            {
-                result = result + stod(left->compute()) % save1;
-            }
-        } 
-        else if (op == "^") 
-        {
-            result = pow(stod(left->compute()), stod(right->compute())); // Using the pow function from cmath for exponentiation
-        } 
-        else 
-        {
-            // Handle invalid operator
-            cout << "Invalid operator" << endl;
-            throw;
-        }
-    }
-
-}
-
-bool Tree::capability () const
-{
-
-    try
-{
-    for (string line; getline(cin, line);)
-    {
-        if ( line.empty() ) continue;
-        if ( line[0] == '#' ) continue;
-        if ( line == "end" ) break;
-
-        istringstream is(line);
-        gis = &is; // reset input stream
-        gid = 0; // reset id counter
-        tok(); // load peek token
-
-        Tree * tree = eval_expr();
-
-        cout << "```mermaid\ngraph TD\n"
-             << "A(\"" << line << "\")\n"
-             << "B(\"" << tree->expr() << "\")\n"
-             << "A --> B\n"
-             << "style A fill:#ded\n"
-             << "style B fill:#dde\n"
-             << tree->edges() << "```\n---\n";
-
-        delete tree;
-    }
-}
-    catch (string s) { cout << "Error: " << s << '\n'; }
-    catch (...) { cout << "exception\n"; }
-
-
-
-}
